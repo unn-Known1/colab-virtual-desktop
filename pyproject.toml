@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "colab-virtual-desktop"
+version = "1.0.0"
+description = "Turn Google Colab into a remote desktop with VNC access"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "AI Agent", email = "agent@stepfun.com"}
+]
+keywords = [
+    "colab",
+    "google-colab",
+    "vnc",
+    "virtual-desktop",
+    "remote-desktop",
+    "gui",
+    "xfce",
+    "xvfb",
+    "novnc",
+    "ngrok",
+    "jupyter",
+    "notebook"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: System :: Emulators",
+    "Topic :: System :: Distributed Computing",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "pyngrok>=3.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "black>=22.0",
+    "flake8>=4.0",
+]
+
+[project.scripts]
+colab-desktop = "colab_desktop.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/unn-Known1/colab-virtual-desktop"
+Documentation = "https://github.com/unn-Known1/colab-virtual-desktop#readme"
+Repository = "https://github.com/unn-Known1/colab-virtual-desktop.git"
+Issues = "https://github.com/unn-Known1/colab-virtual-desktop/issues"
+Changelog = "https://github.com/unn-Known1/colab-virtual-desktop/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+packages = ["colab_desktop", "tests"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+colab_desktop = []
+
+[tool.black]
+line-length = 100
+target-version = ['py38', 'py39', 'py310', 'py311']
+
+[tool.flake8]
+max-line-length = 100
+extend-ignore = ["E203", "W503"]
+per-file-ignores = ["__init__.py:F401"]
