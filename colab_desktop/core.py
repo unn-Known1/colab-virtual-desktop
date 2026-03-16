@@ -470,6 +470,66 @@ class ColabDesktop:
         time.sleep(2)
         return self.start()
 
+
+    def launch_app(self, command: str):
+        """Launch an X11 application on the virtual desktop
+        
+        Args:
+            command: Shell command to run the application (e.g., "xclock &")
+        """
+        import subprocess
+        
+        # Ensure DISPLAY is set
+        env = os.environ.copy()
+        env['DISPLAY'] = self.display
+        
+        # Launch the application
+        subprocess.Popen(command, shell=True, env=env)
+        self.log(f"Launched application: {command}")
+
+    def take_screenshot(self, output_path: str = "/content/desktop_screenshot.png") -> str:
+        """Take a screenshot of the virtual desktop
+        
+        Args:
+            output_path: Where to save the screenshot (PNG format)
+            
+        Returns:
+            Path to screenshot file, or empty string if failed
+        """
+        import subprocess
+        from pathlib import Path
+        
+        # Ensure DISPLAY is set
+        env = os.environ.copy()
+        env['DISPLAY'] = self.display
+        
+        # Try different screenshot methods in order of preference
+        methods = [
+            f"scrot {output_path}",
+            f"import -window root {output_path}",
+            f"xwd -out {output_path}.xwd && convert {output_path}.xwd {output_path}"
+        ]
+        
+        for method in methods:
+            try:
+                result = subprocess.run(
+                    method, 
+                    shell=True, 
+                    env=env,
+                    capture_output=True, 
+                    timeout=5
+                )
+                if result.returncode == 0 and Path(output_path).exists():
+                    self.log(f"Screenshot saved: {output_path}")
+                    return output_path
+            except subprocess.TimeoutExpired:
+                continue
+            except Exception:
+                continue
+        
+        self.log("Failed to capture screenshot", level="ERROR")
+        return ""
+
     def __enter__(self):
         self.setup()
         self.start()

@@ -19,7 +19,7 @@ from pathlib import Path
 # Add parent directory to path for local development
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from colab_desktop import ColabDesktop, is_colab, install_dependencies
+from colab_desktop import ColabDesktop, is_colab
 from colab_desktop.utils import get_environment_summary
 
 
